@@ -89,7 +89,25 @@ Flash-TWRP() {
 }
 
 Root() {
+    $mode=Check-Status
+    if [[ $mode == "recovery" ]]
+    then
+        Flasgh-Magisk
+    elif [[ $mode == "system" ]]
+    then
+        $adb reboot recovery
+        Flash-Magisk
+    elif [[ $mode == "fb" ]]
+    then
+        $fastboot reboot recovery
+    else
+        Error
+    fi
+}
 
+Flash-Magisk() {
+    (echo "twrp sideload") | $adb shell
+    $adb sideload $magisk
 }
 
 Unlock() {
