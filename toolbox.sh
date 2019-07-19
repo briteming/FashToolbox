@@ -51,6 +51,47 @@ Unlock() {
 
 }
 
+TWRP() {
+    $mode=Check-Status
+    if [[ $mode == "fb" ]]
+    then
+        Flash-TWRP
+    elif [[ $mode == "recovery"] -o [ $mode == "system" ]]
+    then
+        $adb reboot bootloader
+        Flash-TWRP
+    else
+        Error
+    fi
+}
+
+Error() {
+    echo "! 出现错误: 设备未在指定时间内响应！请手动排查设备状态以及线缆质量！"
+    read -p "输入回车以返回菜单..."
+    Menu
+
+}
+
+Flash-TWRP() {
+    $currentslot="$fastboot --getvar -currentslot | "
+    if [[ $currentslot == "a" ]]
+    then
+        $activeslot="b"
+    else
+        $activeslot="a"
+    fi
+    $fastboot --set-active=$activeslot
+    $fastboot flash boot $twrp_img
+    $fastboot reboot recovery
+    # Wait user 
+    (echo "twrp sideload") | $adb shell
+    $adb sideload $twrp_zip
+}
+
+Root() {
+
+}
+
 Unlock() {
     Welcome
     echo "注意事项: 解锁手机将会清空手机内所有数据，请谨慎操作！"
@@ -65,7 +106,7 @@ Unlock() {
         echo "==============================================="
         read -p "请在您完成操作后按下Enter键，如需取消操作请关闭终端"
         Welcome
-        echo "正在检测模式...."
+        echo "+ 正在检测模式...."
         # MODE CHECK
         if [[ $mode == "fb" ]]
         then
@@ -73,28 +114,26 @@ Unlock() {
         else
             if [[ $mode == "system" ]]
             then
-            echo "正在重启至Bootloader..."
+            echo "+ 正在重启至Bootloader..."
             $adb reboot bootloader
-            echo "等待设备进入指定状态"
+            echo "? 等待设备进入指定状态"
             sleep 30
             # MODE CHECKE
             if [[ $mode == "fb" ]]
             then
                 FB-Unlock
             else
-                echo "出现错误: 设备未在指定时间内响应！请手动排查设备状态以及线缆质量！"
-                read -p "输入回车以返回菜单..."
-                Menu
+                Error
             fi
         fi
     else
         if [[ $id == "N" ] -o [ $id == "n"]]
         then
-            echo "已取消相关操作"
+            echo "! 已取消相关操作"
             read -p "输入回车以返回菜单..."
             Menu
         else
-            echo "错误的参数！"
+            echo "! 错误的参数！"
             sleep 5
             Unlock
         fi
@@ -102,9 +141,39 @@ Unlock() {
 }
 
 FB-Unlock() {
-    echo "解锁中..."
+    echo "+ 解锁中..."
     $fastboot oem unlock
-    echo "请在出现的界面选择Unlock，并等待开机"
+    echo "* 请在出现的界面选择Unlock，并等待开机"
 }
 
-Menu
+Check-Status() {
+    temp=$($adb devices)
+    if [[ $($temp |grep unauthorized) == "unauthorized" ]]
+    then
+        return unauthor
+    elif [[ $($temp |grep recovery) == "recovery" ]]
+    then
+        return recovery
+    elif [[ $($temp | grep sideload) == "sideload" ]]
+    then
+        return sideload
+    elif [[ $($temp | gerp) == ]]
+    then
+        return system
+    elif [[ $($fastboot devices | grep fastboot) == "fastboot" ]]
+    then
+        return fastboot
+    fi
+}
+
+Initialize() {
+    Welcome
+    echo "+ 正在初始化..."
+    $adb kill-server
+    $adb start-server
+    echo "+ 初始化完毕"
+    sleep 1
+    Menu
+}
+
+Initialize
