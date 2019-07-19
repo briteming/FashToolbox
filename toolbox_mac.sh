@@ -20,7 +20,7 @@ Welcome() {
 
 Info() {
     Welcome
-    echo "$(cat ./.version)"
+    echo "$(cat ./.mac-version)"
     read -p "按下任何按键以返回目录..."
     Menu
 }
