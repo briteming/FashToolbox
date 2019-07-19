@@ -92,7 +92,7 @@ Root() {
     $mode=Check-Status
     if [[ $mode == "recovery" ]]
     then
-        Flasgh-Magisk
+        Flash-Magisk
     elif [[ $mode == "system" ]]
     then
         $adb reboot recovery
