@@ -7,20 +7,20 @@ $adb./tools/fastboot
 $magisk=./files/magisk.zip
 $twrp_img=./files/twrp.img
 $twrp_zip=./files/twrp.zip
+$driver=./files/Mac
 #######################################
 
 Welcome() {
     clear
-    echo "================================="
-    echo "=     OnePlus 7 Pro Toolbox     ="
-    echo "=          by Kevin             ="
-    echo "================================="
+    echo "======================================"
+    echo "=     OnePlus 7 Pro 工具箱 for Mac    ="
+    echo "=             by Kevin               ="
+    echo "======================================"
 }
 
 Info() {
     Welcome
-    #$version="cat ./version"
-    echo "$(cat ./version)"
+    echo "$(cat ./.version)"
     read -p "按下任何按键以返回目录..."
     Menu
 }
@@ -50,6 +50,10 @@ Unlock() {
     if [[ $id == "1" ]]
     then
 
+}
+
+Install-Driver() {
+    sudo cp $driver/* /Applications/
 }
 
 TWRP() {
