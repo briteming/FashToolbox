@@ -1,13 +1,13 @@
 #!/bin/bash
 
 ############ Configuration ############
-$path=./tools
-$fastboot=./tools/fastboot
-$adb./tools/fastboot
-$magisk=./files/magisk.zip
-$twrp_img=./files/twrp.img
-$twrp_zip=./files/twrp.zip
-$driver=./files/Mac
+$path=./tools/mac
+$fastboot=./tools/mac/fastboot
+$adb./tools/mac/fastboot
+$magisk=./files/core/magisk.zip
+$twrp_img=./files/core/twrp.img
+$twrp_zip=./files/core/twrp.zip
+$driver=./files/mac
 #######################################
 
 Welcome() {
