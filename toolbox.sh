@@ -73,8 +73,8 @@ Error() {
 }
 
 Flash-TWRP() {
-    $currentslot="$fastboot --getvar -currentslot | "
-    if [[ $currentslot == "a" ]]
+    $currentslot=$($fastboot getvar current-slot | grep "current-slot: a")
+    if [[ $currentslot == "current-slot: a" ]]
     then
         $activeslot="b"
     else
