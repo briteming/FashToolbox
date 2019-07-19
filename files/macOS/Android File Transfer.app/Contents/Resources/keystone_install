@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# Taken from //depot/googleclient/earth/client/apps/earth/install/mac/.keystone_install_template
+
+function PathForBundleID() {
+  ksadmin -pP $1 | grep xc= | sed -E 's/.+path=(.+)>$/\1/g'
+}
+
+function SafeExit() {
+  echo exit=$1
+  exit 0
+}
+
+app_name="Android File Transfer.app"
+bundle_id="com.google.android.mtpviewer"
+
+agent_app_name="Android File Transfer Agent.app"
+agent_process_name="Android File Transfer Agent"
+agent_dest_dir="$HOME/Library/Application Support/Google/Android File Transfer"
+agent_src_dir="$app_name/Contents/Resources/$agent_app_name"
+
+dest_path=$(PathForBundleID "$bundle_id")
+dest_dir=$(dirname "$dest_path")
+echo dest_path=$dest_path
+
+cd "$1" || SafeExit 1
+version=$(grep -A1 CFBundleVersion "$app_name/Contents/Info.plist" | grep -oE '[[:digit:].]+')
+test -z "$version" && SafeExit 2
+
+if [[ "${#dest_path}" -le 5 ||
+     ! -e "$dest_path" ||
+     "$app_name" -ef "$dest_path" ||
+     ! -e "$dest_dir" ||
+     "$dest_dir" -ef "/" ]]; then
+  SafeExit 3
+fi
+
+backup_path="$dest_path.backup"
+mv "$dest_path" "$backup_path" || SafeExit 4
+
+status=0
+cp -Rp "$app_name" "$dest_dir"
+if [[ $? -eq 0 ]]; then
+  status=$?
+  rm -rf "$backup_path"
+else
+  status=$?
+  rm -rf "$dest_path"
+  mv "$backup_path" "$dest_path"
+fi
+
+lsrtail="Frameworks/LaunchServices.framework/Support/lsregister"
+lsregister="/System/Library/Frameworks/CoreServices.framework/$lsrtail"
+if [ ! -x "$lsregister" ]; then
+  lsregister="/System/Library/Frameworks/ApplicationServices.framework/$lsrtail"
+fi
+
+$lsregister "$dest_path"
+
+echo replacing agent
+killall "$agent_process_name"
+rm -rf "$agent_dest_dir/$agent_app_name"
+cp -Rp "$agent_src_dir" "$agent_dest_dir"
+open "$agent_dest_dir/$agent_app_name"
+
+echo registering
+
+ksadmin --register \
+  -P "$bundle_id" \
+  --version "$version" \
+  --xcpath "$dest_path" \
+  --url https://tools.google.com/service/update2
+
+SafeExit $?

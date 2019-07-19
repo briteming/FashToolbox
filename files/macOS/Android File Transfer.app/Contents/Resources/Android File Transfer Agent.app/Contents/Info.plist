@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BreakpadProduct</key>
+	<string>MTP_Viewer</string>
+	<key>BreakpadProductDisplay</key>
+	<string>Android File Transfer Agent</string>
+	<key>BreakpadReportInterval</key>
+	<string>300</string>
+	<key>BreakpadSendAndExit</key>
+	<string>YES</string>
+	<key>BreakpadURL</key>
+	<string>http://clients2.google.com/cr/report</string>
+	<key>BreakpadVendor</key>
+	<string>Google</string>
+	<key>BreakpadVersion</key>
+	<string>1.0.37.1389 (agent)</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>Android File Transfer Agent</string>
+	<key>CFBundleIconFile</key>
+	<string>usbfistman.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.google.android.mtpagent</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Android File Transfer Agent</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.37.1389</string>
+	<key>LSBackgroundOnly</key>
+	<string>1</string>
+	<key>NSMainNibFile</key>
+	<string>MainMenu</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+</dict>
+</plist>

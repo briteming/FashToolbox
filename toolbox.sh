@@ -31,6 +31,7 @@ Menu() {
     echo "[2] 刷入TWRP"
     echo "[3] Root设备"
     echo "[4] 刷入第三方ROM"
+    echo "[5] 安装驱动"
     echo "[i] 脚本信息          [c] 自定义功能"
     echo "[l] 免责条款          [x] 退出脚本"
     read -p "请输入您需要的功能> " id
