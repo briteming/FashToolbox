@@ -8,8 +8,12 @@ $magisk="./files/core/magisk.zip"
 $twrp_img="./files/core/twrp.img"
 $twrp_zip="./files/core/twrp.zip"
 $driver="./files/mac"
-#######################################
-
+######### Initialize Variable ##########
+temp=""
+id=""
+mode=""
+activeslot=""
+############# Program Code #############
 Welcome() {
     clear
     echo "======================================"
@@ -208,7 +212,8 @@ FB-Unlock() {
 }
 
 Check-Status() {
-    temp=$($adb devices)
+    Initialize
+    $temp=$($adb devices)
     if [[ $($temp |grep unauthorized) == "unauthorized" ]]
     then
         return unauthor
@@ -237,4 +242,6 @@ Initialize() {
     Menu
 }
 
+############ Program Begin ############
 Initialize
+############# Program End #############
