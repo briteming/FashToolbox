@@ -7,7 +7,7 @@ $adb"./tools/mac/fastboot"
 $magisk="./files/core/magisk.zip"
 $twrp_img="./files/core/twrp.img"
 $twrp_zip="./files/core/twrp.zip"
-$driver="./files/mac"
+$files="./files/mac"
 ######### Initialize Variable ##########
 temp=""
 id=""
@@ -73,9 +73,6 @@ Menu() {
             Menu
             ;;
     esac
-        
-
-
 }
 
 Custom() {
@@ -95,7 +92,7 @@ Unlock() {
 }
 
 Install-Driver() {
-    sudo cp $driver/* /Applications/
+    sudo cp $files/* /Applications/
 }
 
 TWRP() {
@@ -103,7 +100,7 @@ TWRP() {
     if [[ $mode == "fb" ]]
     then
         Flash-TWRP
-    elif [[ $mode == "recovery"] -o [ $mode == "system" ]]
+    elif [ $mode == "recovery"]||[ $mode == "system" ]
     then
         $adb reboot bootloader
         Flash-TWRP
@@ -161,7 +158,7 @@ Unlock() {
     Welcome
     echo "注意事项: 解锁手机将会清空手机内所有数据，请谨慎操作！"
     read -p "是否继续？[Y/N]" id
-    if [[ $id == "Y"] -o [ $id =="y" ]]
+    if [ $id == "Y"]||[ $id =="y" ]
     then
         Welcome
         echo "解锁之前请您进行如下操作: "
@@ -192,7 +189,7 @@ Unlock() {
             fi
         fi
     else
-        if [[ $id == "N" ] -o [ $id == "n"]]
+        if [ $id == "N" ]||[ $id == "n"]
         then
             echo "! 已取消相关操作"
             read -p "输入回车以返回菜单..."
@@ -214,10 +211,10 @@ FB-Unlock() {
 Check-Status() {
     Initialize
     $temp=$($adb devices)
-    if [[ $($temp |grep unauthorized) == "unauthorized" ]]
+    if [[ $($temp | grep unauthorized) == "unauthorized" ]]
     then
         return unauthor
-    elif [[ $($temp |grep recovery) == "recovery" ]]
+    elif [[ $($temp | grep recovery) == "recovery" ]]
     then
         return recovery
     elif [[ $($temp | grep sideload) == "sideload" ]]
