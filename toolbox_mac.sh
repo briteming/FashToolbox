@@ -35,10 +35,48 @@ Menu() {
     echo "[i] 脚本信息          [c] 自定义功能"
     echo "[l] 免责条款          [x] 退出脚本"
     read -p "请输入您需要的功能> " id
-    if [[ $id == "i" ]]
-    then
-        Info
-    fi
+    case $id in
+        "1")
+            Unlock
+            ;;
+        "2")
+            TWRP
+            ;;
+        "3")
+            Root
+            ;;
+        "4")
+            ROM
+            ;;
+        "5")
+            Install-Driver
+            ;;
+        "i" | "I")
+            Info
+            ;;
+        "c" | "C")
+            Custom
+            ;;
+        "l" | "L")
+            License
+            ;;
+        "x" | "X")
+            Exit
+            ;;
+        *)
+            echo "错误的参数！请重新输入参数！"
+            sleep 5
+            Menu
+            ;;
+    esac
+        
+
+
+}
+
+Custom() {
+    Welcome
+
 }
 
 Unlock() {
