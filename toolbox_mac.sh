@@ -1,5 +1,8 @@
 #!/bin/bash
-
+############## Questions ##############
+#Q1: Is it that use "twrp install $zip" replace "adb sideload" is better?
+#Q2: If so, how to judge whether the command finished?
+#Q3: Is that the version of the Android SDK platform tools make influence on flashing stability
 ############ Configuration ############
 debug="ture"
 path="./tools/mac"
