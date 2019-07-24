@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ############ Configuration ############
+debug="ture"
 path="./tools/mac"
 fastboot="./tools/mac/fastboot"
 adb="./tools/mac/adb"
@@ -25,7 +26,7 @@ Welcome() {
 Info() {
     Welcome
     echo "$(cat ./.mac-version)"
-    read -p "按下任何按键以返回目录..."
+    read -n 1 -p "输入任意键以返回目录..."
     Menu
 }
 
@@ -41,7 +42,7 @@ Menu() {
     read -p "请输入您需要的功能> " id
     case $id in
         "1")
-            Unlock
+            OEM
             ;;
         "2")
             TWRP
@@ -84,14 +85,34 @@ Exit() {
     exit
 }
 
-Unlock() {
+OEM() {
     Welcome
     echo "[1] 解锁手机"
     echo "[2] 上锁手机"
     echo "[b] 返回上一页          [x] 退出脚本"
-    read -p "请输入您需要的功能> " id
-
+    read -p "请输入您需要的功能> " $id
+    case $id in
+        "1")
+            Unlock
+            ;;
+        "2")
+            Lock-Bootloader
+            ;;
+        "3")
+            Menu
+            ;;
+        "x"|"X")
+            Exit
+            ;;
+        *)
+            echo "错误的参数！请重新输入参数！"
+            sleep 5
+            OEM
+            ;;
+        esac
 }
+
+
 
 Install-Driver() {
     echo "正在安装MTP应用，请授权给予权限！"
@@ -115,7 +136,7 @@ TWRP() {
 
 Error() {
     echo "! 出现错误: 设备未在指定时间内响应！请手动排查设备状态以及线缆质量！"
-    read -p "输入回车以返回菜单..."
+    read -n 1 -p "输入任意键返回菜单..."
     Menu
 
 }
@@ -207,10 +228,16 @@ Unlock() {
     fi
 }
 
-FB-Unlock() {
+Unlock-Bootloader() {
     echo "+ 解锁中..."
     $fastboot oem unlock
     echo "* 请在出现的界面选择Unlock，并等待开机"
+}
+
+Lock-Bootloader() {
+    echo "+ 解锁中..."
+    $fastboot oem lock
+    echo "* " #TODO: 检查输入
 }
 
 Check-Status() {
@@ -240,7 +267,7 @@ Initialize() {
     $adb kill-server
     $adb start-server
     echo "+ 初始化完毕"
-    sleep 1
+    sleep 3
     Menu
 }
 
