@@ -1,13 +1,13 @@
 #!/bin/bash
 
 ############ Configuration ############
-$path="./tools/mac"
-$fastboot="./tools/mac/fastboot"
-$adb"./tools/mac/fastboot"
-$magisk="./files/core/magisk.zip"
-$twrp_img="./files/core/twrp.img"
-$twrp_zip="./files/core/twrp.zip"
-$files="./files/mac"
+path="./tools/mac"
+fastboot="./tools/mac/fastboot"
+adb="./tools/mac/adb"
+magisk="./files/core/magisk.zip"
+twrp_img="./files/core/twrp.img"
+twrp_zip="./files/core/twrp.zip"
+files="./files/mac"
 ######### Initialize Variable ##########
 temp=""
 id=""
@@ -17,7 +17,7 @@ activeslot=""
 Welcome() {
     clear
     echo "======================================"
-    echo "=     OnePlus 7 Pro 工具箱 for Mac    ="
+    echo "=    OnePlus 7 Pro 工具箱 for Mac    ="
     echo "=             by Kevin               ="
     echo "======================================"
 }
@@ -80,19 +80,23 @@ Custom() {
 
 }
 
+Exit() {
+    exit
+}
+
 Unlock() {
     Welcome
     echo "[1] 解锁手机"
     echo "[2] 上锁手机"
     echo "[b] 返回上一页          [x] 退出脚本"
     read -p "请输入您需要的功能> " id
-    if [[ $id == "1" ]]
-    then
 
 }
 
 Install-Driver() {
+    echo "正在安装MTP应用，请授权给予权限！"
     sudo cp $files/* /Applications/
+    echo "命令执行完毕..."
 }
 
 TWRP() {
@@ -176,11 +180,12 @@ Unlock() {
         else
             if [[ $mode == "system" ]]
             then
-            echo "+ 正在重启至Bootloader..."
-            $adb reboot bootloader
-            echo "? 等待设备进入指定状态"
-            sleep 30
-            # MODE CHECKE
+                echo "+ 正在重启至Bootloader..."
+                $adb reboot bootloader
+                echo "? 等待设备进入指定状态"
+                sleep 30
+                # MODE CHECKE
+            fi
             if [[ $mode == "fb" ]]
             then
                 FB-Unlock
@@ -220,7 +225,7 @@ Check-Status() {
     elif [[ $($temp | grep sideload) == "sideload" ]]
     then
         return sideload
-    elif [[ $($temp | gerp) == ]]
+    elif [[ $($temp | gerp) == "device" ]]
     then
         return system
     elif [[ $($fastboot devices | grep fastboot) == "fastboot" ]]
