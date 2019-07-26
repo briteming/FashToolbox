@@ -72,7 +72,7 @@ Menu() {
             Exit
             ;;
         *)
-            echo "错误的参数！请重新输入参数！"
+            echo "! 错误的参数！请重新输入参数！"
             sleep 5
             Menu
             ;;
@@ -108,7 +108,7 @@ OEM() {
             Exit
             ;;
         *)
-            echo "错误的参数！请重新输入参数！"
+            echo "! 错误的参数！请重新输入参数！"
             sleep 5
             OEM
             ;;
@@ -118,9 +118,12 @@ OEM() {
 
 
 Install-Driver() {
-    echo "正在安装MTP应用，请授权给予权限！"
+    echo "+ 正在安装MTP应用，请授权给予权限！"
     sudo cp $files/* /Applications/
-    echo "命令执行完毕..."
+    echo "! 命令执行完毕..."
+    echo "! 初次运行会提示安全风险，请允许！"
+    read -n 1 -p "输入任意键返回菜单..."
+    Menu
 }
 
 TWRP() {
@@ -145,6 +148,7 @@ Error() {
 }
 
 Flash-TWRP() {
+    echo "+ 正在获取分区信息..."
     $currentslot=$($fastboot getvar current-slot | grep "current-slot: a")
     if [[ $currentslot == "current-slot: a" ]]
     then
@@ -153,11 +157,17 @@ Flash-TWRP() {
         $activeslot="a"
     fi
     $fastboot --set-active=$activeslot
+    echo "+ 正在刷入twrp..."
     $fastboot flash boot $twrp_img
+    echo "+ 正在重启至Recovery以执行下一步..."
     $fastboot reboot recovery
-    # Wait user 
+    read -n 1 -p "! 屏幕出现滑动条请直接划过，如果有密码请输入密码点击右下角的钩，完成操作后按任意键以继续"
+    echo "+ 正在进入sideload模式"
     (echo "twrp sideload") | $adb shell
+    echo "+ 正在刷写twrp..."
     $adb sideload $twrp_zip
+    echo "+ 重启进入Recovery..."
+    $adb reboot recovery
 }
 
 Root() {
