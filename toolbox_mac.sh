@@ -231,7 +231,7 @@ Unlock() {
         if [ $id == "N" ]||[ $id == "n"]
         then
             echo "! 已取消相关操作"
-            read -p "输入回车以返回菜单..."
+            read -n 1 -p "输入任意键以返回菜单..."
             Menu
         else
             echo "! 错误的参数！"
@@ -272,6 +272,11 @@ Check-Status() {
     then
         return fastboot
     fi
+}
+
+OemStatus() {
+
+    $fastboot oem device-info
 }
 
 Initialize() {
