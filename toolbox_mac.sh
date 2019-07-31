@@ -254,7 +254,10 @@ Lock-Bootloader() {
 }
 
 Check-Status() {
-    Initialize
+    echo "+ 正在初始化环境"
+    $adb kill-server
+    $adb start-server
+    echo "+ 正在检查手机环境"
     $temp=$($adb devices)
     if [[ $($temp | grep unauthorized) == "unauthorized" ]]
     then
